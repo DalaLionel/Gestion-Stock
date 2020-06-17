@@ -23,9 +23,7 @@ class ProductController extends AbstractController
      */
     public function liste()
     {
-        return $this->json([
-            'message'=>'Ceci est la page listant les produits'
-        ]);
+        return $this->render('/product/list.html.twig');
     }
 
     /**
@@ -33,18 +31,14 @@ class ProductController extends AbstractController
      */
     public function ajout()
     {
-        return $this->json([
-            'message'=>'Ceci est la page d\'ajout des produits'
-        ]);
+        return $this->render('/product/add.html.twig');
     }
 
     /**
-     * @Route ("/product/{id}/modification", name="modif_produits")
+     * @Route ("/product/{id}/edit", name="modif_produits")
      */
     public function modification($id)
     {
-        return $this->json([
-            'message'=>'Ici vous pouvez modifier le produit: '.$id
-        ]);
+        return $this->render('/product/edit.html.twig');
     }
 }
