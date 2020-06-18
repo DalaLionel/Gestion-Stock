@@ -9,4 +9,31 @@
 
 {% block body%}
     <h1>Liste des produits</h1>
+    <a href="{{ path('ajout_produits') }}" class="btn btn-success btn-block">Nouveau Produit</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Prix</th>
+                <th>Quantité</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in product_list %}
+                <tr>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description}}</td>
+                    <td>{{ product.price|number_format(2,'.','')}}</td>
+                    <!-- avec le caractère pipe | on spécifie un filtre pour la propriété à afficher-->
+                    <td>{{ product.quantity}}</td>
+                    <td><a href="{{ path('modif_produits', {id: product.id}) }}" class="btn btn-primary">Modifier</a>
+                    <a href="'#" class="btn btn-danger">Supprimer</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
