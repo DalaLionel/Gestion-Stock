@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Form\ProductFormType;
 use App\Repository\ProductRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProductController extends AbstractController
@@ -37,9 +40,25 @@ class ProductController extends AbstractController
     /**
      * @Route ("/product/add", name="ajout_produits")
      */
-    public function ajout()
+    public function ajout(Request $request, EntityManagerInterface $em)
     {
-        return $this->render('/product/add.html.twig');
+        //Création du formulaire
+        $productForm = $this->createForm(ProductFormType::class);
+        //on passe la requête au formulaire
+        $productForm->handleRequest($request);
+        //On vérifie que le formulaire est envoyé et valide
+        if ($productForm->isSubmitted()&& $productForm->isValid()){
+            //On récupère les données du formulaire
+            $product = ($productForm->getData());
+            $em->persist($product);
+            $em->flush();
+
+            //redirection vers la liste des produits
+            return $this->redirectToRoute('liste_produits');
+
+        }
+        return $this->render('/product/add.html.twig', ['product_form' =>$productForm->createView()]);
+
 
     }
 
